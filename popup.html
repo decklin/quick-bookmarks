@@ -26,7 +26,10 @@ function newTab(u) {
 }
 function sameTab(u) {
     chrome.tabs.getSelected(null, function(t) {
-        chrome.tabs.update(t.id, {'url': u});
+        if (u.substr(0, 11) == 'javascript:')
+            chrome.tabs.executeScript(t.id, {'code': u.substr(11)});
+        else
+            chrome.tabs.update(t.id, {'url': u});
         window.close();
     });
 }
@@ -39,9 +42,10 @@ function getLabel(e) {
   return text;
 }
 
-function listImg(host) {
-    return '<img src="http://www.google.com/s2/favicons?domain=' + host +
-        '" class="favicon" />';
+function listImg(a) {
+    var src = (a.href.substr(0, 11) == 'javascript:') ? 'stock-script.png' :
+        'http://www.google.com/s2/favicons?domain=' + a.hostname;
+    return '<img class="favicon" src="' + src + '" />';
 }
 
 function appendList(t) {
@@ -50,7 +54,7 @@ function appendList(t) {
         if (t[i].url) {
             var s = document.createElement("a");
             s.href = t[i].url;
-            s.innerHTML = listImg(s.hostname) + ' ' + getLabel(t[i]);
+            s.innerHTML = listImg(s) + ' ' + getLabel(t[i]);
             s.onmouseup = mouseUP;
             s.title = t[i].title;
             l.appendChild(s);

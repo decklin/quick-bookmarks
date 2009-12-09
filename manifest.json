@@ -8,6 +8,11 @@
   "description": "An extension to access the bookmarks quickly through popup.",
   "name": "Quick Bookmarks",
   "options_page": "options.html",
-  "permissions": [ "tabs", "bookmarks" ],
+  "permissions": [
+    "tabs",
+    "bookmarks",
+    "http://*/*",
+    "https://*/*"
+  ],
   "version": "1.2"
 }
