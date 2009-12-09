@@ -12,12 +12,12 @@ var keyU = function(e) {
 }
 function mouseUP(e) {
     if (e.which == 2) {
-        newTab(this.url);
+        newTab(this.href);
     } else if (e.which==1) {
         if (ctrl)
-            newTab(this.url);
+            newTab(this.href);
         else
-            sameTab(this.url);
+            sameTab(this.href);
     }
 }
 
@@ -39,15 +39,20 @@ function getLabel(e) {
   return text;
 }
 
+function listImg(host) {
+    return '<img src="http://www.google.com/s2/favicons?domain=' + host +
+        '" class="favicon" />';
+}
+
 function appendList(t) {
     var l = document.getElementById("blist");
     for (var i=0; i<t.length; i++) {
         if (t[i].url) {
             var s = document.createElement("a");
-            s.innerHTML = getLabel(t[i]);
+            s.href = t[i].url;
+            s.innerHTML = listImg(s.hostname) + ' ' + getLabel(t[i]);
             s.onmouseup = mouseUP;
             s.title = t[i].title;
-            s.url = t[i].url;
             l.appendChild(s);
         }
     }
@@ -73,17 +78,23 @@ function init() {
 body {
     margin: 0 0 0 0;
     padding: 0px;
-    color: #093E41;
 }
 a {
+    color: #093E41;
     margin: 0 2px 0 0;
-    list-style: none;
+    text-decoration: none;
     display: block;
     cursor: pointer;
     padding: 1px 5px 1px 5px;
     font-family: verdana;
     font-size: 10pt;
     -webkit-border-radius: 5px;
+}
+.favicon {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    margin-top: -3px;
 }
 a:hover {
     background: -webkit-gradient(linear, left top, left bottom,
