@@ -1,0 +1,185 @@
+<html>
+<head>
+<title>Quick Bookmarks Options</title>
+<STYLE>
+
+BODY {
+	background-color: white;
+	color: #000000;}
+TD {
+	font-size: 10pt; 
+	font-family: verdana,helvetica;}
+
+.head {
+	display: block;
+	background: #CFE9CD;
+	padding: 2px 0 2px 10px;
+}
+
+.option {
+	text-align: left;
+}
+#optContent {
+	margin: 0 auto;
+	margin-top: 10px;
+	width: 500px;
+}
+li{
+	list-style: url("folder.png");
+}
+ul {
+	margin-top: 2px;
+	margin-bottom: 2px;
+	padding-left: 30px;
+}
+li.folder {
+	list-style: url("plus.png");
+}
+li.folder ul{
+	display: none;
+}
+li.folderS {
+	list-style: url("minus.png");
+}
+.lholder, .lholderS {
+	padding: 1px 3px 1px 3px;
+	cursor: pointer;
+	display: block;
+}
+.lholder:hover {
+	background: #E5F2E9;
+}
+
+.lholderS {
+	background: #0F532B;
+	color: #CFECDB;
+}
+.lholderS:hover{
+	background: #129046;
+}
+</STYLE>
+<script type="text/javascript">
+
+var selectedN = null;
+var selecteedId = 1;
+
+var newN = function(p, t, id, lst, isOpen){
+	var s = document.createElement("li");
+	s.className = isOpen?"folderS":"folder";
+	p.appendChild(s);
+	
+		var b = document.createElement("span");
+		if(id == selecteedId){
+			selectedN = b;
+			b.className = "lholderS";
+		} else
+			b.className = "lholder";
+		b.innerHTML = t;
+		b.onclick = function(){
+			s.className = (s.className=='folder')?'folderS':'folder';
+			if (selectedN != null) selectedN.className = "lholder";
+			selectedN = this;
+			selectedN.className = "lholderS";
+			if(selecteedId != id) ep(0);
+			
+			selecteedId = id;
+		};
+		s.appendChild(b);
+	
+		s.appendChild(lst);
+		
+	return (id == selecteedId)||isOpen;
+}
+
+var newList = function(){
+	return document.createElement("ul");
+}
+
+var newL = function(p, t, id){
+	var s  = document.createElement("li");
+	
+		var b = document.createElement("span");
+		if(id == selecteedId){
+			selectedN = b;
+			b.className = "lholderS";
+		} else
+			b.className = "lholder";
+		b.innerHTML = t;
+		b.onclick = function(){
+			if (selectedN != null) selectedN.className = "lholder";
+			selectedN = this;
+			selectedN.className = "lholderS";
+			if(selecteedId != id) ep(0);
+			selecteedId = id;
+		};
+		s.appendChild(b);
+
+	p.appendChild(s);
+	return (id == selecteedId);
+}
+
+function findFolder(n){
+	for(var i=0;i<n.children.length;i++){
+		if(n.children[i].children) return true;
+	}
+	return false;
+}
+
+function addRicurNode(node, pnode){
+	if(node.children){
+		if(findFolder(node)){
+			var tNode = newList();
+			var isO = false;
+			for(var i=0; i< node.children.length;i++){
+				var isO2 = addRicurNode(node.children[i], tNode);
+				isO = isO || isO2;
+			}
+			return newN(pnode, node.title, node.id, tNode, isO);
+			
+		} else
+			return newL(pnode, node.title, node.id);
+	}
+}
+
+function processTree(t){
+	var p = document.getElementById("treeContainer");
+	for(var i=0; i<t[0].children.length;i++){
+		addRicurNode(t[0].children[i], p);
+	}
+}
+function init(){
+	if(localStorage["qb_root"]){
+		selecteedId = localStorage["qb_root"];
+		ep(1);
+	}
+	localStorage["qb_root"] = selecteedId;
+	chrome.bookmarks.getTree(processTree);
+}
+function apply(){
+	localStorage["qb_root"] = selecteedId;
+	ep(1);
+}
+
+function ep(t){
+	if (t)
+		document.getElementById("butApply").setAttribute("disabled",true);
+	else
+		document.getElementById("butApply").removeAttribute("disabled");
+}
+</script>
+</head>
+<body onload="init()">
+<div id="optContent">
+<h2>Quick Bookmarks Options</h2>
+<div class="option">
+<b class="head">Select the root folder for the popup </b>
+<div style=" border: 2px solid #CFE9CD; height: 300px; overflow: auto; ">
+<ul id="treeContainer">
+</ul>
+</div>
+</div>
+<p align="left"><input type="button" value="Apply" id="butApply" onclick="apply();"/></p>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Quick Bookmarks</title>
+
+<script type="text/javascript">
+var ctrl = false;
+var keyD = function(e){
+	if(e.which == 17) ctrl = true;
+}
+var keyU = function(e){
+	if(e.which == 17) ctrl = false;
+}
+function mouseUP(e){
+	if(e.which == 2){
+		newTab(this.url);
+	} else if(e.which==1){
+		if(ctrl)
+			newTab(this.url);
+		else
+			sameTab(this.url);
+		
+	}
+}
+
+function newTab(u){
+	chrome.tabs.create({'url': u},function() {});
+}
+function sameTab(u){
+	chrome.tabs.getSelected(null, function(t){
+		chrome.tabs.update(t.id, {'url': u});
+		window.close();
+	});
+}
+
+function getLabel(e){
+  var text = e.title.substring(0, 20);
+  if (e.title != text){
+  	text += '..';
+  }
+  return text;
+}
+
+function appendList(t){
+	var l = document.getElementById("blist");
+	for(var i=0;i<t.length;i++){
+		if(t[i].url){
+			var s = document.createElement("a");
+			s.innerHTML = getLabel(t[i]);
+			s.onmouseup = mouseUP;
+			s.title = t[i].title;
+			s.url = t[i].url;
+			l.appendChild(s);
+		}
+	}
+	l.focus();
+}
+
+function init(){
+	var root;
+	try {
+		if( root = localStorage['qb_root']) throw true;
+		else throw false;
+	}
+	catch (e){
+		if (e == false){
+			newTab(chrome.extension.getURL('options.html'));
+			window.close();
+		}
+	}
+	chrome.bookmarks.getChildren(root, appendList);
+}
+
+</script>
+<style type="text/css">
+body {
+	
+	margin: 0 0 0 0;
+	padding: 0px;
+	color: #093E41;
+}
+a {
+	margin: 0 2px 0 0;
+	list-style: none;
+	display: block;
+	cursor: pointer;
+	padding: 1px 5px 1px 5px;
+	font-family: verdana;
+	font-size: 10pt;
+	-webkit-border-radius: 5px;
+}
+a:hover{
+	background: -webkit-gradient(linear, left top, left bottom, from(#7C24CB), to(#6619AA));
+	color: #ffffff;
+	-webkit-box-shadow: 1px 1px 1px #000000;
+}
+div {
+	min-width: 170px;
+}
+</style>
+
+</head>
+<body onload="init();" onkeydown="keyD(event);" onkeyup="keyU(event);">
+<div id="blist">
+
+</div>
+</body>
+</html>

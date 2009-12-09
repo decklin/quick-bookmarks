@@ -1,0 +1,13 @@
+{
+   "browser_action": {
+      "default_icon": "favourite.png",
+      "default_title": "Bookmarks",
+      "name": "Quick Bookmarks",
+      "popup": "popup.html"
+   },
+   "description": "An extension to access the bookmarks quickly through popup.",
+   "name": "Quick Bookmarks",
+   "options_page": "options.html",
+   "permissions": [ "tabs", "bookmarks" ],
+   "version": "1.2"
+}
