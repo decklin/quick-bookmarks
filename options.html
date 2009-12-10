@@ -6,25 +6,22 @@
 body {
     background-color: white;
     color: #000000;
+    background: #eeeeee;
 }
-td {
-    font-size: 10pt;
-    font-family: verdana,helvetica;
+.tree {
+    font: 13px "DejaVu Sans", "Bitstream Vera Sans", sans-serif;
+    border: 1px inset #bbbbbb;
+    background: #ffffff;
+    height: 20em;
+    overflow: auto;
 }
-
-.head {
-    display: block;
-    background: #CFE9CD;
-    padding: 2px 0 2px 10px;
-}
-
 .option {
     text-align: left;
 }
 #optContent {
     margin: 0 auto;
     margin-top: 10px;
-    width: 500px;
+    width: 32em;
 }
 li {
     list-style: url("folder.png");
@@ -49,15 +46,15 @@ li.folderS {
     display: block;
 }
 .lholder:hover {
-    background: #E5F2E9;
+    background: #e5e9f2;
 }
 
 .lholderS {
-    background: #0F532B;
-    color: #CFECDB;
+    background: #0f2353;
+    color: #cfd8ec;
 }
 .lholderS:hover{
-    background: #129046;
+    background: #123890;
 }
 </style>
 <script>
@@ -172,15 +169,15 @@ function ep(t) {
 </head>
 <body onload="init();">
 <div id="optContent">
-<h2>Quick Bookmarks Options</h2>
+<h1>Quick Bookmarks Options</h1>
 <div class="option">
-<b class="head">Select the root folder for the popup </b>
-<div style=" border: 2px solid #CFE9CD; height: 300px; overflow: auto; ">
+<h2>Folder to use for the menu:</h2>
+<div class="tree">
 <ul id="treeContainer">
 </ul>
 </div>
 </div>
-<p align="left">
+<p align="right">
 <input type="button" value="Apply" id="butApply" onclick="apply();"/>
 </p>
 </div>

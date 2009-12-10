@@ -34,14 +34,6 @@ function sameTab(u) {
     });
 }
 
-function getLabel(e) {
-  var text = e.title.substring(0, 20);
-  if (e.title != text) {
-    text += '..';
-  }
-  return text;
-}
-
 function listImg(a) {
     var src = (a.href.substr(0, 11) == 'javascript:') ? 'stock-script.png' :
         'http://www.google.com/s2/favicons?domain=' + a.hostname;
@@ -54,7 +46,7 @@ function appendList(t) {
         if (t[i].url) {
             var s = document.createElement("a");
             s.href = t[i].url;
-            s.innerHTML = listImg(s) + ' ' + getLabel(t[i]);
+            s.innerHTML = listImg(s) + ' ' + t[i].title;
             s.onmouseup = mouseUP;
             s.title = t[i].title;
             l.appendChild(s);
@@ -80,34 +72,36 @@ function init() {
 </script>
 <style>
 body {
-    margin: 0 0 0 0;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
 }
-a {
-    color: #093E41;
-    margin: 0 2px 0 0;
-    text-decoration: none;
-    display: block;
-    cursor: pointer;
+#blist {
+    width: 10em;
+}
+#blist a {
+    color: #000000;
+    margin: 1px 0 5px 0;
     padding: 1px 5px 1px 5px;
-    font-family: verdana;
-    font-size: 10pt;
+    display: block;
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    text-decoration: none;
+    font: 13px "DejaVu Sans", "Bitstream Vera Sans", sans-serif;
     -webkit-border-radius: 5px;
+}
+#blist a:hover {
+    color: #ffffff;
+    background: -webkit-gradient(linear, left top, left bottom,
+                from(#6a96c4), to(#456180));
+    -webkit-box-shadow: 1px 1px 1px #000000;
 }
 .favicon {
     width: 16px;
     height: 16px;
     vertical-align: middle;
     margin-top: -3px;
-}
-a:hover {
-    background: -webkit-gradient(linear, left top, left bottom,
-                                 from(#7C24CB), to(#6619AA));
-    color: #ffffff;
-    -webkit-box-shadow: 1px 1px 1px #000000;
-}
-div {
-    min-width: 170px;
 }
 </style>
 
