@@ -1,18 +1,19 @@
 {
+  "name": "Quick Bookmarks",
+  "description": "Access a bookmark folder quickly via popup menu",
+  "version": "2.0",
+  "icons": { "48": "user-bookmarks.png" },
+  "options_page": "options.html",
   "browser_action": {
     "default_icon": "book-blue.png",
     "default_title": "Bookmarks",
     "name": "Quick Bookmarks",
     "popup": "popup.html"
   },
-  "description": "An extension to access the bookmarks quickly through popup.",
-  "name": "Quick Bookmarks",
-  "options_page": "options.html",
   "permissions": [
     "tabs",
     "bookmarks",
     "http://*/*",
     "https://*/*"
-  ],
-  "version": "1.2"
+  ]
 }
