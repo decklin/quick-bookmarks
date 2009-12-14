@@ -21,15 +21,15 @@ function mouseUP(e) {
     }
 }
 
-function newTab(u) {
-    chrome.tabs.create({'url': u}, function() {});
+function newTab(url) {
+    chrome.tabs.create({'url': url}, function() {});
 }
 function sameTab(u) {
-    chrome.tabs.getSelected(null, function(t) {
+    chrome.tabs.getSelected(null, function(tab) {
         if (u.substr(0, 11) == 'javascript:')
-            chrome.tabs.executeScript(t.id, {'code': u.substr(11)});
+            chrome.tabs.executeScript(tab.id, {'code': u.substr(11)});
         else
-            chrome.tabs.update(t.id, {'url': u});
+            chrome.tabs.update(tab.id, {'url': u});
         window.close();
     });
 }
@@ -40,34 +40,32 @@ function listImg(a) {
     return '<img class="favicon" src="' + src + '" />';
 }
 
-function appendList(t) {
-    var l = document.getElementById("blist");
-    for (var i=0; i<t.length; i++) {
-        if (t[i].url) {
-            var s = document.createElement("a");
-            s.href = t[i].url;
-            s.innerHTML = listImg(s) + ' ' + t[i].title;
+function createList(children) {
+    var blist = document.getElementById("blist");
+    blist.innerHTML = '';
+    children.forEach(function(b) {
+        var s = document.createElement("a");
+        if (b.url) {
+            s.href = b.url;
+            s.innerHTML = listImg(s) + ' ' + b.title;
             s.onmouseup = mouseUP;
-            s.title = t[i].title;
-            l.appendChild(s);
+        } else {
+            s.innerHTML = '<img class="favicon" src="folder.png"> ' + b.title;
+            s.onmouseup =
+                function() { chrome.bookmarks.getChildren(b.id, createList); };
         }
-    }
-    l.focus();
+        blist.appendChild(s);
+    });
+    blist.focus();
 }
 
 function init() {
-    var root;
-    try {
-        if ((root = localStorage['qb_root'])) throw true;
-        else throw false;
+    if (localStorage.qb_root) {
+        chrome.bookmarks.getChildren(localStorage.qb_root, createList);
+    } else {
+        newTab(chrome.extension.getURL('options.html'));
+        window.close();
     }
-    catch (e) {
-        if (e == false) {
-            newTab(chrome.extension.getURL('options.html'));
-            window.close();
-        }
-    }
-    chrome.bookmarks.getChildren(root, appendList);
 }
 </script>
 <style>
@@ -107,6 +105,6 @@ body {
 
 </head>
 <body onload="init();" onkeydown="keyD(event);" onkeyup="keyU(event);">
-<div id="blist" />
+<div id="blist"></div>
 </body>
 </html>
