@@ -1,7 +1,7 @@
 {
   "name": "Quick Bookmarks",
   "description": "Access a bookmark folder quickly via popup menu",
-  "version": "2.0",
+  "version": "2.1",
   "icons": { "48": "user-bookmarks.png" },
   "options_page": "options.html",
   "browser_action": {
