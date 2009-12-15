@@ -1,7 +1,7 @@
 {
   "name": "Quick Bookmarks",
   "description": "Access bookmarks via popup menu",
-  "version": "2.3",
+  "version": "2.4",
   "icons": { "48": "user-bookmarks.png" },
   "browser_action": {
     "default_icon": "book-blue.png",
