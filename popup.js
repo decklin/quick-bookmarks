@@ -1,13 +1,16 @@
 var ctrl = false;
-var keyD = function(e) {
-    if (e.which == 17) ctrl = true;
+
+function keyDown(ev) {
+    if (ev.which == 17) ctrl = true;
 }
-var keyU = function(e) {
-    if (e.which == 17) ctrl = false;
+
+function keyUp(ev) {
+    if (ev.which == 17) ctrl = false;
 }
-function mouseUP(e) {
+
+function mouseUp(e) {
     if (this.data)
-        chrome.bookmarks.getChildren(this.data, createList);
+        loadBookmarks(this.data);
     else if (ctrl || e.which == 2)
         newTab(this.href);
     else
@@ -19,8 +22,9 @@ function isJsURL(url) {
 }
 
 function newTab(url) {
-    chrome.tabs.create({'url': url}, function() {});
+    chrome.tabs.create({'url': url});
 }
+
 function sameTab(url) {
     chrome.tabs.getSelected(null, function(tab) {
         if (isJsURL(url))
@@ -31,29 +35,31 @@ function sameTab(url) {
     });
 }
 
-function createList(children) {
+function loadBookmarks(id) {
     var blist = document.getElementById('blist');
     blist.innerHTML = '';
-    children.forEach(function(b) {
-        var s = document.createElement("a"), icon;
-        if (b.url) {
-            if (isJsURL(b.url)) icon = 'stock-script.png';
-            else icon = 'http://getfavicon.appspot.com/' + b.url;
-            s.href = b.url;
-        } else {
-            icon = 'folder.png';
-            s.data = b.id;
-        }
-        s.onmouseup = mouseUP;
-        s.innerHTML = '<img class="favicon" src="'+icon+'" /> ' + b.title;
-        blist.appendChild(s);
+    chrome.bookmarks.getChildren(id, function(children) {
+        children.forEach(function(b) {
+            var s = document.createElement("a"), icon;
+            if (b.url) {
+                if (isJsURL(b.url)) icon = 'stock-script.png';
+                else icon = 'http://getfavicon.appspot.com/' + b.url;
+                s.href = b.url;
+            } else {
+                icon = 'folder.png';
+                s.data = b.id;
+            }
+            s.onmouseup = mouseUp;
+            s.innerHTML = '<img class="favicon" src="'+icon+'" /> ' + b.title;
+            blist.appendChild(s);
+        });
     });
     blist.focus();
 }
 
 function init() {
     if (localStorage.qb_root) {
-        chrome.bookmarks.getChildren(localStorage.qb_root, createList);
+        loadBookmarks(localStorage.qb_root);
     } else {
         newTab(chrome.extension.getURL('options.html'));
         window.close();
