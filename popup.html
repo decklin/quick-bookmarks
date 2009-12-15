@@ -11,49 +11,46 @@ var keyU = function(e) {
     if (e.which == 17) ctrl = false;
 }
 function mouseUP(e) {
-    if (e.which == 2) {
+    if (this.data)
+        chrome.bookmarks.getChildren(this.data, createList);
+    else if (ctrl || e.which == 2)
         newTab(this.href);
-    } else if (e.which==1) {
-        if (ctrl)
-            newTab(this.href);
-        else
-            sameTab(this.href);
-    }
+    else
+        sameTab(this.href);
+}
+
+function isJsURL(url) {
+    return url.substr(0, 11) == 'javascript:';
 }
 
 function newTab(url) {
     chrome.tabs.create({'url': url}, function() {});
 }
-function sameTab(u) {
+function sameTab(url) {
     chrome.tabs.getSelected(null, function(tab) {
-        if (u.substr(0, 11) == 'javascript:')
-            chrome.tabs.executeScript(tab.id, {'code': u.substr(11)});
+        if (isJsURL(url))
+            chrome.tabs.executeScript(tab.id, {'code': url.substr(11)});
         else
-            chrome.tabs.update(tab.id, {'url': u});
+            chrome.tabs.update(tab.id, {'url': url});
         window.close();
     });
 }
 
-function listImg(a) {
-    var src = (a.href.substr(0, 11) == 'javascript:') ? 'stock-script.png' :
-        'http://www.google.com/s2/favicons?domain=' + a.hostname;
-    return '<img class="favicon" src="' + src + '" />';
-}
-
 function createList(children) {
-    var blist = document.getElementById("blist");
+    var blist = document.getElementById('blist');
     blist.innerHTML = '';
     children.forEach(function(b) {
-        var s = document.createElement("a");
+        var s = document.createElement("a"), icon;
         if (b.url) {
+            if (isJsURL(b.url)) icon = 'stock-script.png';
+            else icon = 'http://getfavicon.appspot.com/' + b.url;
             s.href = b.url;
-            s.innerHTML = listImg(s) + ' ' + b.title;
-            s.onmouseup = mouseUP;
         } else {
-            s.innerHTML = '<img class="favicon" src="folder.png"> ' + b.title;
-            s.onmouseup =
-                function() { chrome.bookmarks.getChildren(b.id, createList); };
+            icon = 'folder.png';
+            s.data = b.id;
         }
+        s.onmouseup = mouseUP;
+        s.innerHTML = '<img class="favicon" src="'+icon+'" /> ' + b.title;
         blist.appendChild(s);
     });
     blist.focus();
