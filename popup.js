@@ -35,23 +35,35 @@ function sameTab(url) {
     });
 }
 
+function createBookmarkAnchor(b, title) {
+    var a = document.createElement("a"), icon;
+    var t = title || b.title;
+    if (b.url) {
+        if (isJsURL(b.url)) icon = 'stock-script.png';
+        else icon = 'http://getfavicon.appspot.com/' + b.url;
+        a.href = b.url;
+    } else {
+        icon = 'folder.png';
+        a.data = b.id;
+    }
+    a.onmouseup = mouseUp;
+    a.innerHTML = '<img class="favicon" src="'+icon+'" /> ' + t;
+    return a;
+}
+
 function loadBookmarks(id) {
     var blist = document.getElementById('blist');
     blist.innerHTML = '';
-    chrome.bookmarks.getChildren(id, function(children) {
-        children.forEach(function(b) {
-            var s = document.createElement("a"), icon;
-            if (b.url) {
-                if (isJsURL(b.url)) icon = 'stock-script.png';
-                else icon = 'http://getfavicon.appspot.com/' + b.url;
-                s.href = b.url;
-            } else {
-                icon = 'folder.png';
-                s.data = b.id;
-            }
-            s.onmouseup = mouseUp;
-            s.innerHTML = '<img class="favicon" src="'+icon+'" /> ' + b.title;
-            blist.appendChild(s);
+    chrome.bookmarks.get(id, function(b) {
+        if (b[0].parentId) {
+            chrome.bookmarks.get(b[0].parentId, function(p) {
+                blist.appendChild(createBookmarkAnchor(p[0], '..'));
+            });
+        }
+        chrome.bookmarks.getChildren(id, function(children) {
+            children.forEach(function(b) {
+                blist.appendChild(createBookmarkAnchor(b));
+            });
         });
     });
     blist.focus();
