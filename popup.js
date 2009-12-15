@@ -1,3 +1,6 @@
+const rootId = '0';
+const bbarId = '1';
+
 var ctrl = false;
 
 function keyDown(ev) {
@@ -35,15 +38,15 @@ function sameTab(url) {
     });
 }
 
-function createBookmarkAnchor(b, title) {
+function createBookmarkAnchor(b, parent) {
     var a = document.createElement("a"), icon;
-    var t = title || b.title;
+    var t = parent ? '..' : b.title;
     if (b.url) {
         if (isJsURL(b.url)) icon = 'stock-script.png';
         else icon = 'http://getfavicon.appspot.com/' + b.url;
         a.href = b.url;
     } else {
-        icon = 'folder.png';
+        icon = parent ? 'folder-open.png' : 'folder.png';
         a.data = b.id;
     }
     a.onmouseup = mouseUp;
@@ -54,26 +57,35 @@ function createBookmarkAnchor(b, title) {
 function loadBookmarks(id) {
     var blist = document.getElementById('blist');
     blist.innerHTML = '';
-    chrome.bookmarks.get(id, function(b) {
-        if (b[0].parentId) {
-            chrome.bookmarks.get(b[0].parentId, function(p) {
-                blist.appendChild(createBookmarkAnchor(p[0], '..'));
-            });
-        }
-        chrome.bookmarks.getChildren(id, function(children) {
+    if (id == rootId || id == bbarId) {
+        chrome.bookmarks.getChildren(bbarId, function(children) {
             children.forEach(function(b) {
                 blist.appendChild(createBookmarkAnchor(b));
             });
+            blist.appendChild(document.createElement('hr'));
         });
-    });
+        chrome.bookmarks.getChildren(rootId, function(children) {
+            children.forEach(function(b) {
+                if (b.id != bbarId)
+                    blist.appendChild(createBookmarkAnchor(b));
+            });
+        });
+    } else {
+        chrome.bookmarks.get(id, function(b) {
+            chrome.bookmarks.get(b[0].parentId, function(p) {
+                blist.appendChild(createBookmarkAnchor(p[0], true));
+                blist.appendChild(document.createElement('hr'));
+            });
+            chrome.bookmarks.getChildren(id, function(children) {
+                children.forEach(function(b) {
+                    blist.appendChild(createBookmarkAnchor(b));
+                });
+            });
+        });
+    }
     blist.focus();
 }
 
 function init() {
-    if (localStorage.qb_root) {
-        loadBookmarks(localStorage.qb_root);
-    } else {
-        newTab(chrome.extension.getURL('options.html'));
-        window.close();
-    }
+    loadBookmarks(rootId);
 }

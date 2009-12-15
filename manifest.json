@@ -3,7 +3,6 @@
   "description": "Access bookmark folders quickly via popup menu",
   "version": "2.2",
   "icons": { "48": "user-bookmarks.png" },
-  "options_page": "options.html",
   "browser_action": {
     "default_icon": "book-blue.png",
     "default_title": "Bookmarks",

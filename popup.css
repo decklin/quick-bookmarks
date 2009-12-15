@@ -30,3 +30,9 @@ body {
     vertical-align: middle;
     margin-top: -3px;
 }
+hr {
+    margin: 1px 0 5px 0;
+    height: 1px;
+    border: 0;
+    background-color: #ccc;
+}
