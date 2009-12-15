@@ -1,0 +1,32 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+#blist {
+    width: 10em;
+}
+#blist a {
+    color: #000000;
+    margin: 1px 0 5px 0;
+    padding: 1px 5px 1px 5px;
+    display: block;
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    text-decoration: none;
+    font: 13px "DejaVu Sans", "Bitstream Vera Sans", sans-serif;
+    -webkit-border-radius: 5px;
+}
+#blist a:hover {
+    color: #ffffff;
+    background: -webkit-gradient(linear, left top, left bottom,
+                from(#6a96c4), to(#456180));
+    -webkit-box-shadow: 1px 1px 1px #000000;
+}
+.favicon {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    margin-top: -3px;
+}
