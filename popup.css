@@ -1,9 +1,13 @@
 body {
     margin: 0;
     padding: 0;
+    width: 10em;
 }
 #blist {
-    width: 10em;
+    margin: 0;
+    padding: 0;
+    max-height: 600px;
+    overflow-y: auto;
 }
 #blist a {
     color: #000000;
