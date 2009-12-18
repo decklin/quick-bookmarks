@@ -42,8 +42,12 @@ function createBookmarkAnchor(b, parent) {
     var a = document.createElement("a"), icon;
     var t = parent ? '..' : b.title;
     if (b.url) {
-        if (isJsURL(b.url)) icon = 'stock-script.png';
-        else icon = 'http://getfavicon.appspot.com/' + b.url;
+        if (isJsURL(b.url))
+            icon = 'stock-script.png';
+        else if (localStorage[b.url])
+            icon = localStorage[b.url];
+        else
+            icon = 'http://getfavicon.appspot.com/' + b.url;
         a.href = b.url;
     } else {
         icon = parent ? 'folder-open.png' : 'folder.png';
