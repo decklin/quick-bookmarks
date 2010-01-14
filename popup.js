@@ -11,10 +11,10 @@ function keyUp(ev) {
     if (ev.which == 17) ctrl = false;
 }
 
-function mouseUp(e) {
+function mouseUp(ev) {
     if (this.data)
         loadBookmarks(this.data);
-    else if (ctrl || e.which == 2)
+    else if (ctrl || ev.which == 2)
         newTab(this.href);
     else
         sameTab(this.href);
