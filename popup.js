@@ -60,18 +60,26 @@ function createBookmarkAnchor(b, parent) {
 
 function loadBookmarks(id) {
     var blist = document.getElementById('blist');
+    document.body.style.width = '10em';
+    var append = function(b) {
+        blist.appendChild(createBookmarkAnchor(b));
+        // Unfortunately this needs to depend on an em being set to 13px
+        // in our stylesheet since clientWidth is in pixels.
+        document.body.style.width = Math.max(document.body.clientWidth,
+            Math.floor(b.title.length * 13 / 2)) + 'px';
+    };
     blist.innerHTML = '';
     if (id == rootId || id == bbarId) {
         chrome.bookmarks.getChildren(bbarId, function(children) {
             children.forEach(function(b) {
-                blist.appendChild(createBookmarkAnchor(b));
+                append(b);
             });
             blist.appendChild(document.createElement('hr'));
         });
         chrome.bookmarks.getChildren(rootId, function(children) {
             children.forEach(function(b) {
                 if (b.id != bbarId)
-                    blist.appendChild(createBookmarkAnchor(b));
+                    append(b);
             });
         });
     } else {
@@ -82,7 +90,7 @@ function loadBookmarks(id) {
             });
             chrome.bookmarks.getChildren(id, function(children) {
                 children.forEach(function(b) {
-                    blist.appendChild(createBookmarkAnchor(b));
+                    append(b);
                 });
             });
         });
