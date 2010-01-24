@@ -1,20 +1,10 @@
 const rootId = '0';
 const bbarId = '1';
 
-var ctrl = false;
-
-function keyDown(ev) {
-    if (ev.which == 17) ctrl = true;
-}
-
-function keyUp(ev) {
-    if (ev.which == 17) ctrl = false;
-}
-
 function mouseUp(ev) {
     if (this.data)
         loadBookmarks(this.data);
-    else if (ctrl || ev.which == 2)
+    else if (ev.ctrlKey || ev.which == 2)
         newTab(this.href);
     else
         sameTab(this.href);
