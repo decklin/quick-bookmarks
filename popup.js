@@ -69,7 +69,6 @@ function createBookmarkItem(b, parent) {
 
 function loadBookmarks(id) {
     var blist = document.getElementById('blist');
-    document.body.style.width = '10em';
     var append = function(b) {
         blist.appendChild(createBookmarkItem(b));
         // Unfortunately this needs to depend on an em being set to 13px
@@ -77,7 +76,10 @@ function loadBookmarks(id) {
         document.body.style.width = Math.max(document.body.clientWidth,
             Math.floor(b.title.length * 13 / 2)) + 'px';
     };
+
     blist.innerHTML = '';
+    document.body.style.width = '10em';
+
     if (id == rootId || id == bbarId) {
         chrome.bookmarks.getChildren(bbarId, function(children) {
             children.forEach(function(b) {
@@ -104,6 +106,7 @@ function loadBookmarks(id) {
             });
         });
     }
+
     blist.focus();
 }
 
