@@ -38,9 +38,18 @@ function sameTab(url) {
     });
 }
 
-function createBookmarkAnchor(b, parent) {
-    var a = document.createElement("a"), icon;
-    var t = parent ? '..' : b.title;
+function deleteItem(ev) {
+    var blist = document.getElementById('blist');
+    blist.removeChild(this.parentNode);
+    chrome.bookmarks.remove(this.data);
+}
+
+function createBookmarkItem(b, parent) {
+    var li = document.createElement('li');
+    var a = document.createElement('a');
+    var del = document.createElement('img');
+    var icon, title = parent ? '..' : b.title;
+
     if (b.url) {
         if (isJsURL(b.url))
             icon = 'stock-script.png';
@@ -54,15 +63,25 @@ function createBookmarkAnchor(b, parent) {
         a.data = b.id;
     }
     a.onmouseup = mouseUp;
-    a.innerHTML = '<img class="favicon" src="'+icon+'" /> ' + t;
-    return a;
+    a.innerHTML = '<img class="favicon" src="'+icon+'" /> ' + title;
+    li.appendChild(a);
+
+    if (b.url) {
+        del.src = 'delete.png';
+        del.setAttribute('class', 'delete');
+        del.data = b.id;
+        del.onmouseup = deleteItem;
+        li.appendChild(del);
+    }
+
+    return li;
 }
 
 function loadBookmarks(id) {
     var blist = document.getElementById('blist');
     document.body.style.width = '10em';
     var append = function(b) {
-        blist.appendChild(createBookmarkAnchor(b));
+        blist.appendChild(createBookmarkItem(b));
         // Unfortunately this needs to depend on an em being set to 13px
         // in our stylesheet since clientWidth is in pixels.
         document.body.style.width = Math.max(document.body.clientWidth,
@@ -85,7 +104,7 @@ function loadBookmarks(id) {
     } else {
         chrome.bookmarks.get(id, function(b) {
             chrome.bookmarks.get(b[0].parentId, function(p) {
-                blist.appendChild(createBookmarkAnchor(p[0], true));
+                blist.appendChild(createBookmarkItem(p[0], true));
                 blist.appendChild(document.createElement('hr'));
             });
             chrome.bookmarks.getChildren(id, function(children) {

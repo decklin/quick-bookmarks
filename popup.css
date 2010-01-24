@@ -44,6 +44,15 @@ body {
     vertical-align: middle;
     margin-top: -3px;
 }
+#blist li .delete {
+    display: none;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+}
+#blist li:hover .delete {
+    display: inline;
+}
 hr {
     margin: 3px 0;
     height: 1px;
