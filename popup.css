@@ -1,45 +1,52 @@
-body {
+* {
     margin: 0;
     padding: 0;
+}
+body {
     width: 10em;
 }
 #blist {
-    margin: 0;
-    padding: 0;
+    list-style: none;
     max-height: 600px;
     overflow-y: auto;
 }
-#blist a {
-    color: #000000;
-    margin: 1px 0 5px 0;
-    padding: 1px 5px 1px 5px;
-    display: block;
-    overflow-x: hidden;
+#blist li {
+    margin-right: 2px;
     white-space: nowrap;
-    text-overflow: ellipsis;
-    cursor: pointer;
-    text-decoration: none;
     font: 13px "DejaVu Sans", "Bitstream Vera Sans", sans-serif;
-    -webkit-border-radius: 5px;
+    -webkit-border-radius: 3px;
+    position: relative;
 }
-#blist a:last-child {
+#blist li:last-child {
     margin-bottom: 1px;
 }
-#blist a:hover {
-    color: #ffffff;
-    background: -webkit-gradient(linear, left top, left bottom,
-                                 from(#6a96c4), to(#456180));
+#blist li a {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 3px 6px;
+    color: #000000;
+    text-decoration: none;
+}
+#blist li:hover {
+    background: -webkit-gradient(
+        linear, left top, left bottom, from(#6a96c4), to(#456180)
+    );
     -webkit-box-shadow: 1px 1px 1px #000000;
 }
-.favicon {
+#blist li:hover a {
+    color: #ffffff;
+    cursor: pointer;
+}
+#blist li .favicon {
     width: 16px;
     height: 16px;
     vertical-align: middle;
     margin-top: -3px;
 }
 hr {
-    margin: 1px 0 5px 0;
-    border: 0;
+    margin: 3px 0;
     height: 1px;
+    border: 0;
     background-color: #ccc;
 }
