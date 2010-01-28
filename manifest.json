@@ -1,7 +1,7 @@
 {
   "name": "Quick Bookmarks",
   "description": "Access bookmarks via popup menu",
-  "version": "3.0",
+  "version": "3.1",
   "icons": { "48": "user-bookmarks.png" },
   "background_page": "background.html",
   "browser_action": {
