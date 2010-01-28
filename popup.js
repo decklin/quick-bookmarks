@@ -112,10 +112,9 @@ function loadFolder(id) {
     var curLength = blist.children.length;
     var append = function(b) {
         blist.appendChild(createBookmarkItem(b));
-        // Unfortunately this needs to depend on an em being set to 13px
-        // in our stylesheet since clientWidth is in pixels.
+        // Unfortunately this is a guess based on a 13px font in the CSS.
         document.body.style.width = Math.max(document.body.clientWidth,
-            Math.floor(b.title.length * 13 / 2)) + 'px';
+            Math.floor(b.title.length * 7)) + 'px';
     };
 
     blist.innerHTML = '';
@@ -125,7 +124,7 @@ function loadFolder(id) {
             // Popup implementation is weird so it's only worth resetting
             // width if the height will change.
             if (children.length + 2 > curLength)
-                document.body.style.width = '10em';
+                document.body.style.width = '12em';
             children.forEach(function(b) {
                 append(b);
             });
@@ -146,7 +145,7 @@ function loadFolder(id) {
             chrome.bookmarks.getChildren(id, function(children) {
                 // Same here, except the two extra kids are at the top.
                 if (children.length + 2 > curLength)
-                    document.body.style.width = '10em';
+                    document.body.style.width = '12em';
                 children.forEach(function(b) {
                     append(b);
                 });
