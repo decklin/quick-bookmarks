@@ -1,24 +1,35 @@
 const rootId = '0';
 const bbarId = '1';
 
-function mouseUp(ev) {
-    if (this.data)
-        loadBookmarks(this.data);
-    else if (ev.ctrlKey || ev.which == 2)
-        newTab(this.href);
+var selected = null;
+
+function itemClicked(ev) {
+    switch (ev.button) {
+    case 0:
+        openBookmark(this, ev.ctrlKey ? createTab : reuseTab);
+        break;
+    case 1:
+        openBookmark(this, createTab);
+        break;
+    case 2:
+        popupMenu(this, ev);
+        break;
+    }
+}
+
+function openBookmark(a, loadUrl) {
+    if (a.href)
+        loadUrl(a.href);
     else
-        sameTab(this.href);
+        loadFolder(a.data);
+    clearMenu();
 }
 
-function isJsURL(url) {
-    return url.substr(0, 11) == 'javascript:';
-}
-
-function newTab(url) {
+function createTab(url) {
     chrome.tabs.create({'url': url});
 }
 
-function sameTab(url) {
+function reuseTab(url) {
     chrome.tabs.getSelected(null, function(tab) {
         if (isJsURL(url))
             chrome.tabs.executeScript(tab.id, {'code': url.substr(11)});
@@ -28,46 +39,71 @@ function sameTab(url) {
     });
 }
 
-function deleteItem(ev) {
+function isJsURL(url) {
+    return url.substr(0, 11) == 'javascript:';
+}
+
+function popupMenu(a, ev) {
+    clearMenu();
+
+    var menu = document.getElementById('menu');
+    menu.style.left = ev.clientX + 'px';
+    menu.style.top = ev.clientY + 'px';
+    menu.style.display = 'block';
+
+    selected = a;
+    a.setAttribute('class', 'selected');
+}
+
+function clearMenu() {
+    var menu = document.getElementById('menu');
+    menu.style.display = 'none';
+
+    if (selected) {
+        selected.setAttribute('class', '');
+        selected = null;
+    }
+}
+
+function openSelected() {
+    openBookmark(selected, reuseTab);
+}
+
+function deleteSelected() {
     var blist = document.getElementById('blist');
-    blist.removeChild(this.parentNode);
-    chrome.bookmarks.remove(this.data);
+    blist.removeChild(selected.parentNode);
+    chrome.bookmarks.remove(selected.data);
+
+    clearMenu();
 }
 
 function createBookmarkItem(b, parent) {
+    var icon, title = parent ? '..' : b.title;
     var li = document.createElement('li');
     var a = document.createElement('a');
-    var del = document.createElement('img');
-    var icon, title = parent ? '..' : b.title;
+
+    a.data = b.id;
+    a.onmouseup = itemClicked;
 
     if (b.url) {
+        a.href = b.url;
         if (isJsURL(b.url))
             icon = 'stock-script.png';
         else if (localStorage[b.url])
             icon = localStorage[b.url];
         else
             icon = 'http://getfavicon.appspot.com/' + b.url;
-        a.href = b.url;
     } else {
         icon = parent ? 'folder-open.png' : 'folder.png';
-        a.data = b.id;
     }
-    a.onmouseup = mouseUp;
+
     a.innerHTML = '<img class="favicon" src="'+icon+'" /> ' + title;
     li.appendChild(a);
-
-    if (b.url) {
-        del.src = 'delete.png';
-        del.setAttribute('class', 'delete');
-        del.data = b.id;
-        del.onmouseup = deleteItem;
-        li.appendChild(del);
-    }
 
     return li;
 }
 
-function loadBookmarks(id) {
+function loadFolder(id) {
     var blist = document.getElementById('blist');
     var append = function(b) {
         blist.appendChild(createBookmarkItem(b));
@@ -111,5 +147,5 @@ function loadBookmarks(id) {
 }
 
 function init() {
-    loadBookmarks(rootId);
+    loadFolder(rootId);
 }

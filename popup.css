@@ -4,17 +4,17 @@
 }
 body {
     width: 10em;
+    font: 13px "DejaVu Sans", "Bitstream Vera Sans", sans-serif;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 #blist {
     list-style: none;
     max-height: 600px;
-    overflow-y: auto;
 }
 #blist li {
     margin-right: 2px;
     white-space: nowrap;
-    font: 13px "DejaVu Sans", "Bitstream Vera Sans", sans-serif;
-    -webkit-border-radius: 3px;
     position: relative;
 }
 #blist li:last-child {
@@ -32,11 +32,10 @@ body {
     background: -webkit-gradient(
         linear, left top, left bottom, from(#6a96c4), to(#456180)
     );
-    -webkit-box-shadow: 1px 1px 1px #000000;
 }
 #blist li:hover a {
     color: #ffffff;
-    cursor: pointer;
+    cursor: default;
 }
 #blist li .favicon {
     width: 16px;
@@ -50,12 +49,35 @@ body {
     right: 5px;
     top: 5px;
 }
-#blist li:hover .delete {
-    display: inline;
+#blist li .selected {
+    background: #d0e4fa;
+}
+#blist li .selected:hover {
+    background: inherit;
 }
 hr {
     margin: 3px 0;
     height: 1px;
     border: 0;
     background-color: #ccc;
+}
+#menu {
+    display: none;
+    position: absolute;
+    background: #fff;
+    border: 1px solid #777;
+    list-style: none;
+    padding: 3px;
+}
+#menu li {
+    cursor: default;
+    padding: 3px;
+    white-space: nowrap;
+}
+#menu li:hover {
+    color: #ffffff;
+    background: #6a96c4;
+}
+#menu li img {
+    vertical-align: bottom;
 }
