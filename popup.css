@@ -10,7 +10,7 @@ body {
 }
 #blist {
     list-style: none;
-    max-height: 600px;
+    max-height: 500px;
 }
 #blist li {
     margin-right: 2px;
