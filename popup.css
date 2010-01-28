@@ -5,12 +5,12 @@
 body {
     width: 12em;
     font: 13px "DejaVu Sans", "Bitstream Vera Sans", sans-serif;
-    overflow-x: hidden;
-    overflow-y: auto;
 }
 #blist {
     list-style: none;
     max-height: 500px;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 #blist li {
     margin-right: 2px;
