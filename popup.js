@@ -46,9 +46,13 @@ function isJsURL(url) {
 function popupMenu(a, ev) {
     clearMenu();
 
+    // Based on total width defined in CSS. Yuck.
+    var x = Math.min(ev.clientX, document.body.clientWidth - 82);
+    var y = Math.min(ev.clientY, document.body.clientHeight - 52);
+
     var menu = document.getElementById('menu');
-    menu.style.left = ev.clientX + 'px';
-    menu.style.top = ev.clientY + 'px';
+    menu.style.left = x + 'px';
+    menu.style.top = y + 'px';
     menu.style.display = 'block';
 
     selected = a;

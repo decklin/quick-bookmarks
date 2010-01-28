@@ -64,6 +64,8 @@ hr {
 #menu {
     display: none;
     position: absolute;
+    width: 72px;
+    height: 44px;
     background: #fff;
     border: 1px solid #777;
     list-style: none;
