@@ -109,6 +109,7 @@ function createBookmarkItem(b, parent) {
 
 function loadFolder(id) {
     var blist = document.getElementById('blist');
+    var curLength = blist.children.length;
     var append = function(b) {
         blist.appendChild(createBookmarkItem(b));
         // Unfortunately this needs to depend on an em being set to 13px
@@ -118,10 +119,13 @@ function loadFolder(id) {
     };
 
     blist.innerHTML = '';
-    document.body.style.width = '10em';
 
     if (id == rootId || id == bbarId) {
         chrome.bookmarks.getChildren(bbarId, function(children) {
+            // Popup implementation is weird so it's only worth resetting
+            // width if the height will change.
+            if (children.length + 2 > curLength)
+                document.body.style.width = '10em';
             children.forEach(function(b) {
                 append(b);
             });
@@ -140,6 +144,9 @@ function loadFolder(id) {
                 blist.appendChild(document.createElement('hr'));
             });
             chrome.bookmarks.getChildren(id, function(children) {
+                // Same here, except the two extra kids are at the top.
+                if (children.length + 2 > curLength)
+                    document.body.style.width = '10em';
                 children.forEach(function(b) {
                     append(b);
                 });
