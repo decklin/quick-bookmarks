@@ -3,11 +3,14 @@
     padding: 0;
 }
 body {
-    width: 12em;
+    width: 180px;
+    max-width: 500px;
+    max-height: 500px;
     font: 13px "DejaVu Sans", "Bitstream Vera Sans", sans-serif;
 }
 #blist {
     list-style: none;
+    max-width: 500px;
     max-height: 500px;
     overflow-x: hidden;
     overflow-y: auto;

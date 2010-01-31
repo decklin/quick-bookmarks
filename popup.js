@@ -1,5 +1,6 @@
 const rootId = '0';
 const bbarId = '1';
+const defaultWidth = '180px';
 
 var selected = null;
 
@@ -113,8 +114,10 @@ function loadFolder(id) {
     var append = function(b) {
         blist.appendChild(createBookmarkItem(b));
         // Unfortunately this is a guess based on a 13px font in the CSS.
-        document.body.style.width = Math.max(document.body.clientWidth,
-            Math.floor(b.title.length * 7)) + 'px';
+        // And duplicates the max width.
+        var approxWidth = Math.floor(b.title.length * 7);
+        document.body.style.width = Math.min(
+            500, Math.max(document.body.clientWidth, approxWidth)) + 'px';
     };
 
     blist.innerHTML = '';
@@ -124,7 +127,7 @@ function loadFolder(id) {
             // Popup implementation is weird so it's only worth resetting
             // width if the height will change.
             if (children.length + 2 > curLength)
-                document.body.style.width = '12em';
+                document.body.style.width = defaultWidth;
             children.forEach(function(b) {
                 append(b);
             });
@@ -145,7 +148,7 @@ function loadFolder(id) {
             chrome.bookmarks.getChildren(id, function(children) {
                 // Same here, except the two extra kids are at the top.
                 if (children.length + 2 > curLength)
-                    document.body.style.width = '12em';
+                    document.body.style.width = defaultWidth;
                 children.forEach(function(b) {
                     append(b);
                 });
