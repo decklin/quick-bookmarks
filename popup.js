@@ -56,7 +56,7 @@ function popupMenu(a, ev) {
     menu.style.display = 'block';
 
     selected = a;
-    a.setAttribute('class', 'selected');
+    a.className = 'selected';
 }
 
 function clearMenu() {
@@ -64,7 +64,7 @@ function clearMenu() {
     menu.style.display = 'none';
 
     if (selected) {
-        selected.setAttribute('class', '');
+        selected.className = '';
         selected = null;
     }
 }
