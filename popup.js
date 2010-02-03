@@ -33,7 +33,7 @@ function createTab(url) {
 function reuseTab(url) {
     chrome.tabs.getSelected(null, function(tab) {
         if (isJsURL(url))
-            chrome.tabs.executeScript(tab.id, {'code': url.substr(11)});
+            chrome.tabs.executeScript(tab.id, {'code': getJsCode(url)});
         else
             chrome.tabs.update(tab.id, {'url': url});
         window.close();
@@ -42,6 +42,10 @@ function reuseTab(url) {
 
 function isJsURL(url) {
     return url.substr(0, 11) == 'javascript:';
+}
+
+function getJsCode(url) {
+    return unescape(url.substr(11));
 }
 
 function popupMenu(a, ev) {
