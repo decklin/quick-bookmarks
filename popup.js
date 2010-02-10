@@ -27,7 +27,7 @@ function openBookmark(a, loadUrl) {
 }
 
 function createTab(url) {
-    chrome.tabs.create({url: url});
+    chrome.tabs.create({url: url, selected: false});
 }
 
 function reuseTab(url) {
