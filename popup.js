@@ -27,15 +27,15 @@ function openBookmark(a, loadUrl) {
 }
 
 function createTab(url) {
-    chrome.tabs.create({'url': url});
+    chrome.tabs.create({url: url});
 }
 
 function reuseTab(url) {
     chrome.tabs.getSelected(null, function(tab) {
         if (isJsURL(url))
-            chrome.tabs.executeScript(tab.id, {'code': getJsCode(url)});
+            chrome.tabs.executeScript(tab.id, {code: getJsCode(url)});
         else
-            chrome.tabs.update(tab.id, {'url': url});
+            chrome.tabs.update(tab.id, {url: url});
         window.close();
     });
 }
