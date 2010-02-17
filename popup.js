@@ -70,6 +70,8 @@ function popupMenu(a, ev) {
 
 function clearMenu() {
     var menu = document.getElementById('menu');
+    menu.style.top = '0';
+    menu.style.left = '0';
     menu.style.visibility = 'hidden';
 
     if (selected) {
