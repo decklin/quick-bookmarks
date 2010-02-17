@@ -52,6 +52,9 @@ function popupMenu(a, ev) {
     clearMenu();
 
     var menu = document.getElementById('menu');
+    var menuOpenAll = document.getElementById('menuOpenAll');
+    menuOpenAll.style.display = a.href ? 'none' : 'block';
+
     var x = Math.min(ev.clientX,
                      document.body.clientWidth - menu.clientWidth - 4);
     var y = Math.min(ev.clientY,
@@ -77,6 +80,15 @@ function clearMenu() {
 
 function openSelected() {
     openBookmark(selected, reuseTab);
+}
+
+function openSelectedChildren() {
+    chrome.bookmarks.getChildren(selected.data, function(children) {
+        children.forEach(function(bookmark) {
+            if (bookmark.url)
+                createTab(bookmark.url);
+        });
+    });
 }
 
 function deleteSelected() {
