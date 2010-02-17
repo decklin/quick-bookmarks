@@ -1,7 +1,7 @@
 {
   "name": "Quick Bookmarks",
   "description": "Access bookmarks via popup menu",
-  "version": "3.4",
+  "version": "3.5",
   "icons": {
       "48": "user-bookmarks-48.png",
       "32": "user-bookmarks-32.png"
