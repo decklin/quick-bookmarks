@@ -51,14 +51,15 @@ function getJsCode(url) {
 function popupMenu(a, ev) {
     clearMenu();
 
-    // Based on total width defined in CSS. Yuck.
-    var x = Math.min(ev.clientX, document.body.clientWidth - 82);
-    var y = Math.min(ev.clientY, document.body.clientHeight - 52);
-
     var menu = document.getElementById('menu');
+    var x = Math.min(ev.clientX,
+                     document.body.clientWidth - menu.clientWidth - 4);
+    var y = Math.min(ev.clientY,
+                     document.body.clientHeight - menu.clientHeight - 3);
+
     menu.style.left = x + 'px';
     menu.style.top = y + 'px';
-    menu.style.display = 'block';
+    menu.style.visibility = 'visible';
 
     selected = a;
     a.className = 'selected';
@@ -66,7 +67,7 @@ function popupMenu(a, ev) {
 
 function clearMenu() {
     var menu = document.getElementById('menu');
-    menu.style.display = 'none';
+    menu.style.visibility = 'hidden';
 
     if (selected) {
         selected.className = '';

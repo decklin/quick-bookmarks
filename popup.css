@@ -65,10 +65,10 @@ hr {
     background-color: #ccc;
 }
 #menu {
-    display: none;
+    visibility: hidden;
     position: absolute;
-    width: 72px;
-    height: 44px;
+    top: 0;
+    left: 0;
     background: #fff;
     border: 1px solid #777;
     list-style: none;
