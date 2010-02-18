@@ -124,13 +124,13 @@ function createBookmarkItem(b, parent) {
     if (b.url) {
         a.href = b.url;
         if (isJsURL(b.url))
-            icon = 'stock-script.png';
+            icon = 'icons/script.png';
         else if (localStorage[b.url])
             icon = localStorage[b.url];
         else
             icon = 'http://getfavicon.appspot.com/' + b.url;
     } else {
-        icon = parent ? 'folder-open.png' : 'folder.png';
+        icon = parent ? 'icons/folder-open.png' : 'icons/folder.png';
     }
 
     a.innerHTML = '<img class="favicon" src="'+icon+'" /> ' + title;
