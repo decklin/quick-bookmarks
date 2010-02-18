@@ -52,8 +52,16 @@ function popupMenu(a, ev) {
     clearMenu();
 
     var menu = document.getElementById('menu');
+    var menuOpenTab = document.getElementById('menuOpenTab');
     var menuOpenAll = document.getElementById('menuOpenAll');
-    menuOpenAll.style.display = a.href ? 'none' : 'block';
+
+    if (a.href) {
+        menuOpenTab.style.display = 'block';
+        menuOpenAll.style.display = 'none';
+    } else {
+        menuOpenTab.style.display = 'none';
+        menuOpenAll.style.display = 'block';
+    }
 
     var x = Math.min(ev.clientX,
                      document.body.clientWidth - menu.clientWidth - 4);
@@ -82,6 +90,10 @@ function clearMenu() {
 
 function openSelected() {
     openBookmark(selected, reuseTab);
+}
+
+function openSelectedNewTab() {
+    openBookmark(selected, createTab);
 }
 
 function openSelectedChildren() {
