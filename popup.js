@@ -19,10 +19,12 @@ function itemClicked(ev) {
 }
 
 function openBookmark(a, loadUrl) {
-    if (a.href)
+    if (a.href) {
         loadUrl(a.href);
-    else
-        loadFolder(a.data);
+    } else {
+        var data = JSON.parse(a.data);
+        loadFolder(data.id);
+    }
     clearMenu();
 }
 
@@ -97,7 +99,8 @@ function openSelectedNewTab() {
 }
 
 function openSelectedChildren() {
-    chrome.bookmarks.getChildren(selected.data, function(children) {
+    var data = JSON.parse(a.data);
+    chrome.bookmarks.getChildren(data.id, function(children) {
         children.forEach(function(bookmark) {
             if (bookmark.url)
                 createTab(bookmark.url);
@@ -105,10 +108,25 @@ function openSelectedChildren() {
     });
 }
 
+function renameSelected() {
+    var data = JSON.parse(selected.data);
+    var newTitle = prompt('Name:', data.title);
+
+    if (newTitle) {
+        chrome.bookmarks.update(data.id, {title: newTitle});
+        var newText = document.createTextNode(' ' + newTitle);
+        selected.replaceChild(newText, selected.lastChild);
+    }
+
+    clearMenu();
+}
+
 function deleteSelected() {
     var blist = document.getElementById('blist');
+    var data = JSON.parse(selected.data);
+
     blist.removeChild(selected.parentNode);
-    chrome.bookmarks.remove(selected.data);
+    chrome.bookmarks.remove(data.id);
 
     clearMenu();
 }
@@ -118,7 +136,7 @@ function createBookmarkItem(b, parent) {
     var li = document.createElement('li');
     var a = document.createElement('a');
 
-    a.data = b.id;
+    a.data = JSON.stringify({id: b.id, title: title});
     a.onmouseup = itemClicked;
 
     if (b.url) {
