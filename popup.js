@@ -110,13 +110,23 @@ function openSelectedChildren() {
 
 function renameSelected() {
     var data = JSON.parse(selected.data);
-    var newTitle = prompt('Name:', data.title);
+    var item = selected;
+    var input = document.createElement('input');
+    input.value = data.title;
+    item.replaceChild(input, item.lastChild);
+    item.onmouseup = undefined;
 
-    if (newTitle) {
-        chrome.bookmarks.update(data.id, {title: newTitle});
-        var newText = document.createTextNode(' ' + newTitle);
-        selected.replaceChild(newText, selected.lastChild);
-    }
+    input.focus();
+    input.select();
+    input.addEventListener('keydown', function(event) {
+        if (event.keyCode === 13) {
+            data.title = input.value;
+            item.data = JSON.stringify(data);
+            chrome.bookmarks.update(data.id, {title: data.title});
+            item.replaceChild(document.createTextNode(data.title), input);
+        }
+        item.onmouseup = itemClicked;
+    });
 
     clearMenu();
 }
