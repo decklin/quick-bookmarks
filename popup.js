@@ -151,7 +151,7 @@ function createBookmarkItem(b, parent) {
         icon = parent ? 'icons/folder-open.png' : 'icons/folder.png';
     }
 
-    a.innerHTML = '<img class="favicon" src="'+icon+'" /> ' + title;
+    a.innerHTML = '<img class="favicon" src="'+icon+'" />' + title;
     li.appendChild(a);
 
     return li;

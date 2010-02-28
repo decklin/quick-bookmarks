@@ -33,6 +33,9 @@ body {
     color: #000000;
     text-decoration: none;
 }
+#blist li a img {
+    padding-right: 4px;
+}
 #blist li:hover {
     background: -webkit-gradient(
         linear, left top, left bottom, from(#6a96c4), to(#456180)
