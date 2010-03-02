@@ -99,7 +99,7 @@ function openSelectedNewTab() {
 }
 
 function openSelectedChildren() {
-    var data = JSON.parse(a.data);
+    var data = JSON.parse(selected.data);
     chrome.bookmarks.getChildren(data.id, function(children) {
         children.forEach(function(bookmark) {
             if (bookmark.url)
