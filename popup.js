@@ -184,9 +184,7 @@ function loadFolder(id) {
     if (id == rootId || id == bbarId) {
         chrome.bookmarks.getChildren(bbarId, function(children) {
             document.body.style.width = defaultWidth;
-            children.forEach(function(b) {
-                append(b);
-            });
+            children.forEach(append);
             blist.appendChild(document.createElement('hr'));
         });
         chrome.bookmarks.getChildren(rootId, function(children) {
@@ -203,9 +201,7 @@ function loadFolder(id) {
             });
             chrome.bookmarks.getChildren(id, function(children) {
                 document.body.style.width = defaultWidth;
-                children.forEach(function(b) {
-                    append(b);
-                });
+                children.forEach(append);
             });
         });
     }
