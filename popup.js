@@ -183,10 +183,7 @@ function loadFolder(id) {
 
     if (id == rootId || id == bbarId) {
         chrome.bookmarks.getChildren(bbarId, function(children) {
-            // Popup implementation is weird so it's only worth resetting
-            // width if the height will change.
-            if (children.length + 2 > curLength)
-                document.body.style.width = defaultWidth;
+            document.body.style.width = defaultWidth;
             children.forEach(function(b) {
                 append(b);
             });
@@ -205,9 +202,7 @@ function loadFolder(id) {
                 blist.appendChild(document.createElement('hr'));
             });
             chrome.bookmarks.getChildren(id, function(children) {
-                // Same here, except the two extra kids are at the top.
-                if (children.length + 2 > curLength)
-                    document.body.style.width = defaultWidth;
+                document.body.style.width = defaultWidth;
                 children.forEach(function(b) {
                     append(b);
                 });
