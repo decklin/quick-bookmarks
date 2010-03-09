@@ -1,6 +1,7 @@
 const rootId = '0';
 const bbarId = '1';
-const defaultWidth = '180px';
+const defaultWidth = 180;
+const maxWidth = 500;
 
 var selected = null;
 
@@ -175,15 +176,15 @@ function loadFolder(id) {
         // Unfortunately this is a guess based on a 13px font in the CSS.
         // And duplicates the max width.
         var approxWidth = Math.floor(b.title.length * 7);
-        document.body.style.width = Math.min(
-            500, Math.max(document.body.clientWidth, approxWidth)) + 'px';
+        document.body.style.width = Math.min(maxWidth,
+            Math.max(document.body.clientWidth, approxWidth)) + 'px';
     };
 
     blist.innerHTML = '';
 
     if (id == rootId || id == bbarId) {
         chrome.bookmarks.getChildren(bbarId, function(children) {
-            document.body.style.width = defaultWidth;
+            document.body.style.width = defaultWidth + 'px';
             children.forEach(append);
             blist.appendChild(document.createElement('hr'));
         });
@@ -200,7 +201,7 @@ function loadFolder(id) {
                 blist.appendChild(document.createElement('hr'));
             });
             chrome.bookmarks.getChildren(id, function(children) {
-                document.body.style.width = defaultWidth;
+                document.body.style.width = defaultWidth + 'px';
                 children.forEach(append);
             });
         });
