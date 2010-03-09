@@ -19,7 +19,6 @@ body {
     overflow-y: auto;
 }
 #blist li {
-    margin-right: 2px;
     white-space: nowrap;
     position: relative;
 }
@@ -30,7 +29,7 @@ body {
     display: block;
     overflow: hidden;
     text-overflow: ellipsis;
-    padding: 3px 6px;
+    padding: 3px 4px;
     color: #000000;
     text-decoration: none;
 }
