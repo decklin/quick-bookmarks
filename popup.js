@@ -8,7 +8,12 @@ var selected = null;
 function itemClicked(ev) {
     switch (ev.button) {
     case 0:
-        openBookmark(this, ev.ctrlKey ? createTab : reuseTab);
+        if (ev.ctrlKey && ev.shiftKey)
+            openBookmark(this, createTabSelected);
+        else if (ev.ctrlKey)
+            openBookmark(this, createTab);
+        else
+            openBookmark(this, reuseTab);
         break;
     case 1:
         openBookmark(this, createTab);
@@ -31,6 +36,11 @@ function openBookmark(a, loadUrl) {
 
 function createTab(url) {
     chrome.tabs.create({url: url, selected: false});
+}
+
+function createTabSelected(url) {
+    chrome.tabs.create({url: url, selected: true});
+    window.close();
 }
 
 function reuseTab(url) {
