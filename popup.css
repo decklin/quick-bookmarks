@@ -36,12 +36,12 @@ body {
 #blist li a img {
     padding-right: 4px;
 }
-#blist li:hover {
+#blist.selectable li:hover {
     background: -webkit-gradient(
         linear, left top, left bottom, from(#6a96c4), to(#456180)
     );
 }
-#blist li:hover a {
+#blist.selectable li:hover a {
     color: #ffffff;
     cursor: default;
 }
@@ -59,9 +59,6 @@ body {
 }
 #blist li .selected {
     background: #d0e4fa;
-}
-#blist li .selected:hover {
-    background: inherit;
 }
 #blist input {
     font-family: inherit;

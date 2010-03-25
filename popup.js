@@ -6,21 +6,25 @@ const maxWidth = 500;
 var selected = null;
 
 function itemClicked(ev) {
-    switch (ev.button) {
-    case 0:
-        if (ev.ctrlKey && ev.shiftKey)
-            openBookmark(this, createTabSelected);
-        else if (ev.ctrlKey)
+    if (selected) {
+        clearMenu();
+    } else {
+        switch (ev.button) {
+        case 0:
+            if (ev.ctrlKey && ev.shiftKey)
+                openBookmark(this, createTabSelected);
+            else if (ev.ctrlKey)
+                openBookmark(this, createTab);
+            else
+                openBookmark(this, reuseTab);
+            break;
+        case 1:
             openBookmark(this, createTab);
-        else
-            openBookmark(this, reuseTab);
-        break;
-    case 1:
-        openBookmark(this, createTab);
-        break;
-    case 2:
-        popupMenu(this, ev);
-        break;
+            break;
+        case 2:
+            popupMenu(this, ev);
+            break;
+        }
     }
 }
 
@@ -62,11 +66,12 @@ function getJsCode(url) {
 }
 
 function popupMenu(a, ev) {
-    clearMenu();
-
+    var blist = document.getElementById('blist');
     var menu = document.getElementById('menu');
     var menuOpenTab = document.getElementById('menuOpenTab');
     var menuOpenAll = document.getElementById('menuOpenAll');
+
+    blist.className = 'obscured';
 
     if (a.href) {
         menuOpenTab.style.display = 'block';
@@ -90,7 +95,11 @@ function popupMenu(a, ev) {
 }
 
 function clearMenu() {
+    var blist = document.getElementById('blist');
     var menu = document.getElementById('menu');
+
+    blist.className = 'selectable';
+
     menu.style.top = '0';
     menu.style.left = '0';
     menu.style.visibility = 'hidden';
