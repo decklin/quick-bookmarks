@@ -193,7 +193,6 @@ function loadFolder(id) {
     var append = function(b) {
         blist.appendChild(createBookmarkItem(b));
         // Unfortunately this is a guess based on a 13px font in the CSS.
-        // And duplicates the max width.
         var approxWidth = Math.floor(b.title.length * 7);
         document.body.style.width = Math.min(maxWidth,
             Math.max(document.body.clientWidth, approxWidth)) + 'px';
