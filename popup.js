@@ -199,17 +199,17 @@ function loadFolder(id) {
     };
 
     blist.innerHTML = '';
+    document.body.style.width = defaultWidth + 'px';
 
-    if (id == rootId || id == bbarId) {
+    if (id === rootId || id === bbarId) {
         chrome.bookmarks.getChildren(bbarId, function(children) {
-            document.body.style.width = defaultWidth + 'px';
             children.forEach(append);
             blist.appendChild(document.createElement('hr'));
-        });
-        chrome.bookmarks.getChildren(rootId, function(children) {
-            children.forEach(function(b) {
-                if (b.id != bbarId)
-                    append(b);
+            chrome.bookmarks.getChildren(rootId, function(children) {
+                children.forEach(function(b) {
+                    if (b.id !== bbarId)
+                        append(b);
+                });
             });
         });
     } else {
@@ -217,10 +217,9 @@ function loadFolder(id) {
             chrome.bookmarks.get(b[0].parentId, function(p) {
                 blist.appendChild(createBookmarkItem(p[0], true));
                 blist.appendChild(document.createElement('hr'));
-            });
-            chrome.bookmarks.getChildren(id, function(children) {
-                document.body.style.width = defaultWidth + 'px';
-                children.forEach(append);
+                chrome.bookmarks.getChildren(id, function(children) {
+                    children.forEach(append);
+                });
             });
         });
     }
