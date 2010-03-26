@@ -88,6 +88,7 @@ hr {
     cursor: default;
     padding: 3px;
     white-space: nowrap;
+    display: none;
 }
 #menu li:hover {
     color: #ffffff;
@@ -95,4 +96,10 @@ hr {
 }
 #menu li img {
     vertical-align: bottom;
+}
+#menu.bookmark li.bookmark {
+    display: block;
+}
+#menu.folder li.folder {
+    display: block;
 }

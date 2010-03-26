@@ -72,18 +72,7 @@ function popupMenu(a, ev) {
     var menuOpenAll = document.getElementById('menuOpenAll');
 
     blist.className = 'obscured';
-
-    if (a.href) {
-        menuOpenTab.style.display = 'block';
-        menuOpenAll.style.display = 'none';
-        menuDelete.style.display = 'block';
-        menuDefault.style.display = 'none';
-    } else {
-        menuOpenTab.style.display = 'none';
-        menuOpenAll.style.display = 'block';
-        menuDelete.style.display = 'none';
-        menuDefault.style.display = 'block';
-    }
+    menu.className = a.href ? 'bookmark' : 'folder';
 
     var x = Math.min(ev.clientX,
                      document.body.clientWidth - menu.clientWidth - 4);

@@ -9,22 +9,22 @@
 <body onload="init();" onclick="clearMenu();">
   <ul id="blist" class="selectable"></ul>
   <ul id="menu">
-    <li id="menuOpen" onmouseup="openSelected();">
+    <li id="menuOpen" class="bookmark folder" onmouseup="openSelected();">
       <img src="icons/right.png" /> Open
     </li>
-    <li id="menuOpenTab" onmouseup="openSelectedNewTab();">
+    <li id="menuOpenTab" class="bookmark" onmouseup="openSelectedNewTab();">
       <img src="icons/new-tab.png" /> Open in New Tab
     </li>
-    <li id="menuOpenAll" onmouseup="openSelectedChildren();">
+    <li id="menuOpenAll" class="folder" onmouseup="openSelectedChildren();">
       <img src="icons/new-tab.png" /> Open All in Tabs
     </li>
-    <li id="menuRename" onmouseup="renameSelected();">
+    <li id="menuRename" class="bookmark folder" onmouseup="renameSelected();">
       <img src="icons/rename.png"> Rename
     </li>
-    <li id="menuDelete" onmouseup="deleteSelected();">
+    <li id="menuDelete" class="bookmark" onmouseup="deleteSelected();">
       <img src="icons/delete.png"> Delete
     </li>
-    <li id="menuDefault" onmouseup="makeSelectedDefault();">
+    <li id="menuDefault" class="folder" onmouseup="makeSelectedDefault();">
       <img src="icons/default.png"> Make Default
     </li>
   </ul>
