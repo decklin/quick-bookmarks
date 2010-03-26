@@ -76,9 +76,13 @@ function popupMenu(a, ev) {
     if (a.href) {
         menuOpenTab.style.display = 'block';
         menuOpenAll.style.display = 'none';
+        menuDelete.style.display = 'block';
+        menuDefault.style.display = 'none';
     } else {
         menuOpenTab.style.display = 'none';
         menuOpenAll.style.display = 'block';
+        menuDelete.style.display = 'none';
+        menuDefault.style.display = 'block';
     }
 
     var x = Math.min(ev.clientX,
@@ -161,6 +165,11 @@ function deleteSelected() {
     clearMenu();
 }
 
+function makeSelectedDefault() {
+    var data = JSON.parse(selected.data);
+    localStorage.startId = data.id;
+}
+
 function createBookmarkItem(b, parent) {
     var icon, title = parent ? '..' : b.title;
     var li = document.createElement('li');
@@ -228,5 +237,5 @@ function loadFolder(id) {
 }
 
 function init() {
-    loadFolder(rootId);
+    loadFolder(localStorage.startId || rootId);
 }
